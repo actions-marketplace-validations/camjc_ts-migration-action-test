@@ -17,19 +17,19 @@ async function getAllFilenames(dirPath: string, fileArr: string[]) {
 }
 
 function countByExtension(filenames: string[]) {
-  return filenames.reduce((counts: { [x: string]: number; }, filename: string) => {
+  return filenames.reduce((counts: {[x: string]: number}, filename: string) => {
     const extension = filename.split('.').pop() || '';
-    return { ...counts, [extension]: (counts[extension] || 0) + 1 };
+    return {...counts, [extension]: (counts[extension] || 0) + 1};
   }, {});
 }
 
 async function run() {
   try {
     const myInput = core.getInput('myInput');
-    core.debug(`Hello ${myInput} from inside a container`);
-    const arrayOfFiles = []
-    getAllFilenames(process.env.GITHUB_WORKSPACE || '/', arrayOfFiles)
-    core.setOutput('countsByExtension', countByExtension(arrayOfFiles))
+    core.debug(`Hello ${myInput} from github runner`);
+    const arrayOfFiles = [];
+    getAllFilenames(process.env.GITHUB_WORKSPACE || '/', arrayOfFiles);
+    core.setOutput('countsByExtension', countByExtension(arrayOfFiles));
   } catch (error) {
     core.setFailed((error as any).message);
   }

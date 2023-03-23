@@ -1,0 +1,15 @@
+name: Self run
+
+on:
+  push: {branches: main}
+  pull_request: {branches: main}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: TS migration progress
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - name: Check files by extension
+        run: node ./lib/main.js
