@@ -1,6 +1,6 @@
-import core from '@actions/core';
+const core= require('@actions/core');
 const fs = require('fs').promises;
-import path from 'path';
+const path= require('path');
 
 async function getAllFilenames(dirPath: string, fileArr: string[]) {
   const files = await fs.readdir(dirPath);
