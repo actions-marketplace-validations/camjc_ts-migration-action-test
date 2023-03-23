@@ -3,6 +3,8 @@ description: 'See how many JS vs TS files there are in this repo'
 outputs:
   files-by-extension: # id of output
     description: 'The files by extension'
+  ts-percent: # id of output
+    description: 'The ratio of ts to js files'
 runs:
   using: 'node16'
   main: 'lib/index.js'
