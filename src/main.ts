@@ -30,7 +30,8 @@ async function run() {
     getAllFilenames(process.env.GITHUB_WORKSPACE || '/', arrayOfFiles);
     core.setOutput('files-by-extension', countByExtension(arrayOfFiles));
   } catch (error) {
-    core.setFailed((error as any).message);
+    console.error(JSON.stringify(error))
+    // core.setFailed((error as any).message);
   }
 }
 
