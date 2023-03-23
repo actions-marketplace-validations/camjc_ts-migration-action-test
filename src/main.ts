@@ -41,12 +41,11 @@ async function run() {
     core.setOutput('files-by-extension', counts);
     const tsCount = sumValues(counts, ['.ts', '.tsx']);
     const jsCount = sumValues(counts, ['.js', '.jsx']);
+    const total = tsCount + jsCount;
     core.debug(tsCount);
     core.debug(jsCount);
-    core.setOutput(
-      'ts-percent',
-      Math.floor((tsCount / tsCount + jsCount) * 100)
-    );
+    core.debug(total);
+    core.setOutput('ts-percent', Math.floor((tsCount / total) * 100));
   } catch (error) {
     core.setFailed((error as {message: string}).message);
   }
