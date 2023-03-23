@@ -17,34 +17,36 @@ async function getAllFilenames(dirPath: string, fileArr: string[]) {
 }
 
 function countByExtension(filenames: string[]) {
-  return filenames.reduce((counts: { [x: string]: number }, filename: string) => {
+  return filenames.reduce((counts: {[x: string]: number}, filename: string) => {
     const extension = path.extname(filename);
-    return { ...counts, [extension]: (counts[extension] || 0) + 1 };
+    return {...counts, [extension]: (counts[extension] || 0) + 1};
   }, {});
 }
 
-function sumValues(counts: { [key: string]: number }, extensions: string[]) {
-  let sum = 0
+function sumValues(counts: {[key: string]: number}, extensions: string[]) {
+  let sum = 0;
   for (let extension in extensions) {
-    sum += 1
+    sum += counts[extension];
   }
-  return sum
+  return sum;
 }
 
 async function run() {
   try {
-    core.debug(`Hello from github runner`);
     const arrayOfFiles = [];
     await getAllFilenames(process.env.GITHUB_WORKSPACE || '/', arrayOfFiles);
     const counts = countByExtension(arrayOfFiles);
     core.setOutput('files-by-extension', counts);
-    const tsCount = sumValues(counts, ['.ts', '.tsx'])
-    const jsCount = sumValues(counts, ['.js', '.jsx'])
-    core.debug(tsCount)
-    core.debug(jsCount)
-    core.setOutput('ts-percent', Math.floor((tsCount / tsCount + jsCount) * 100));
+    const tsCount = sumValues(counts, ['.ts', '.tsx']);
+    const jsCount = sumValues(counts, ['.js', '.jsx']);
+    core.debug(tsCount);
+    core.debug(jsCount);
+    core.setOutput(
+      'ts-percent',
+      Math.floor((tsCount / tsCount + jsCount) * 100)
+    );
   } catch (error) {
-    core.setFailed((error as any).message);
+    core.setFailed((error as {message: string}).message);
   }
 }
 
