@@ -27,7 +27,7 @@ async function run() {
   try {
     core.debug(`Hello from github runner`);
     const arrayOfFiles = [];
-    getAllFilenames(process.env.GITHUB_WORKSPACE || '/', arrayOfFiles);
+    await getAllFilenames(process.env.GITHUB_WORKSPACE || '/', arrayOfFiles);
     core.setOutput('files-by-extension', countByExtension(arrayOfFiles));
   } catch (error) {
     core.setFailed((error as any).message);
