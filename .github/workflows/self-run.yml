@@ -5,11 +5,27 @@ on:
   pull_request: {branches: main}
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  update-migration-percent:
     name: TS migration progress
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: npm install
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Check files by extension
         run: node ./lib/main.js
+      - name: Find Comment Id
+        uses: peter-evans/find-comment@v2
+        id: find-comment-id
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: TS Migration
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.update-migration-percent.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            TS Migration
+            ${{ steps.update-migration-percent.outputs.ts-percent }}%
+          edit-mode: replace
