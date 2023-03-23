@@ -30,8 +30,8 @@ async function run() {
     await getAllFilenames(process.env.GITHUB_WORKSPACE || '/', arrayOfFiles);
     const counts  = countByExtension(arrayOfFiles) as any;
     core.setOutput('files-by-extension', counts);
-    const tsCount = 0 + counts.ts + counts.tsx
-    const jsCount = 0 + counts.js + counts.jsx
+    const tsCount = 0 + counts['.ts'] + counts['.tsx']
+    const jsCount = 0 + counts['.js'] + counts['.jsx']
     core.setOutput('ts-percent', Math.floor((tsCount / tsCount+jsCount) * 100));
   } catch (error) {
     core.setFailed((error as any).message);
