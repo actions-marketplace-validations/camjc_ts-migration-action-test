@@ -1,16 +1,37 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
+import core from '@actions/core';
+const fs = require('fs').promises;
+import path from 'path';
+
+async function getAllFilenames(dirPath: string, fileArr: string[]) {
+  const files = await fs.readdir(dirPath);
+  for (const file of files) {
+    const filePath = path.join(dirPath, file);
+    const stats = await fs.stat(filePath);
+    if (stats.isDirectory()) {
+      await getAllFilenames(filePath, fileArr);
+    } else {
+      fileArr.push(filePath);
+    }
+  }
+  return fileArr;
+}
+
+function countByExtension(filenames: string[]) {
+  return filenames.reduce((counts: { [x: string]: number; }, filename: string) => {
+    const extension = filename.split('.').pop() || '';
+    return { ...counts, [extension]: (counts[extension] || 0) + 1 };
+  }, {});
+}
 
 async function run() {
   try {
     const myInput = core.getInput('myInput');
     core.debug(`Hello ${myInput} from inside a container`);
-
-    // Get github context data
-    const context = github.context;
-    console.log(`We can even get context data, like the repo: ${context.repo.repo}`)
+    const arrayOfFiles = []
+    getAllFilenames(process.env.GITHUB_WORKSPACE || '/', arrayOfFiles)
+    core.setOutput('countsByExtension', countByExtension(arrayOfFiles))
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed((error as any).message);
   }
 }
 
