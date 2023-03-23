@@ -25,11 +25,10 @@ function countByExtension(filenames: string[]) {
 
 async function run() {
   try {
-    const myInput = core.getInput('myInput');
-    core.debug(`Hello ${myInput} from github runner`);
+    core.debug(`Hello from github runner`);
     const arrayOfFiles = [];
     getAllFilenames(process.env.GITHUB_WORKSPACE || '/', arrayOfFiles);
-    core.setOutput('countsByExtension', countByExtension(arrayOfFiles));
+    core.setOutput('files-by-extension', countByExtension(arrayOfFiles));
   } catch (error) {
     core.setFailed((error as any).message);
   }
