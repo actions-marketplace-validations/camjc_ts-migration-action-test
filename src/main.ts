@@ -25,7 +25,7 @@ function countByExtension(filenames: string[]) {
 
 function sumValues(counts: {[key: string]: number}, extensions: string[]) {
   let sum = 0;
-  for (let extension in extensions) {
+  for (let extension of extensions) {
     sum += counts[extension];
   }
   return sum;
