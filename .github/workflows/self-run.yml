@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: npm install
-        run: npm ci
+        run: npm i
       - name: Check files by extension
         run: node ./lib/main.js
       - name: Find Comment Id
