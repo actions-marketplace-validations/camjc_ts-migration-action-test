@@ -18,7 +18,7 @@ async function getAllFilenames(dirPath: string, fileArr: string[]) {
 
 function countByExtension(filenames: string[]) {
   return filenames.reduce((counts: {[x: string]: number}, filename: string) => {
-    const extension = filename.split('.')[1] || 'unknown';
+    const extension = path.extname(filename);
     return {...counts, [extension]: (counts[extension] || 0) + 1};
   }, {});
 }
