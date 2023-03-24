@@ -7,4 +7,4 @@ outputs:
     description: 'The ratio of ts to js files'
 runs:
   using: 'node16'
-  main: 'lib/index.js'
+  main: 'lib/main.js'
